@@ -8,7 +8,7 @@ namespace CryptoLicenseGenerator
 	public class LicenseWorkflow
 	{
 		private const string emailAddressFrom = "Support@MaximaSoftware.co.za";
-		private const string LicenseFileLocation = @"D:\Google Drive\Maxima Software Confidential\TempLicenseCode.netlicproj";
+		private const string LicenseFileLocation = @"..\..\..\LicenseGeneratorWorkflowDataFiles\ExampleLicenseCode.netlicproj";
 		private readonly LicenseGenerator _licenseGenerator;
 		private readonly LicenseEmailGenerator _licenseEmailGenerator;
 

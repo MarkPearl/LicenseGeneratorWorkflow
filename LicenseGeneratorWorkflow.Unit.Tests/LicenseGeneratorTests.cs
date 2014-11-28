@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IniParser;
+using IniParser.Model;
 using Xunit;
 
 namespace CryptoLicenseGenerator.Unit.Tests
@@ -13,8 +15,12 @@ namespace CryptoLicenseGenerator.Unit.Tests
 	    [Fact]
 	    public void ShouldDoSomething()
 	    {
+			var parser = new FileIniDataParser();
+			var parsedData = parser.LoadFile(@"../../../LicenseGeneratorWorkflowDataFiles/LicenseGeneratorWorkflow.ini");
+			var provider = parsedData["GeneralConfiguration"].GetKeyData("smtpProvider");
+
 		    var cryptoLicenseGeneratorWrapper = new CryptoLicenseGeneratorWrapper();
-		    var licenseEmailGenerator = new LicenseEmailGenerator();
+		    var licenseEmailGenerator = new LicenseEmailGenerator("", 25, false, "", "");
 		    var licenseGeneratorWorkflow = new LicenseWorkflow(cryptoLicenseGeneratorWrapper, licenseEmailGenerator);
 		    
 			var payPalInfo = new PayPalInfo(

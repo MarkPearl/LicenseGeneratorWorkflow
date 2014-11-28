@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="INIFileParser">
+      <HintPath>..\packages\ini-parser.2.1.1\lib\INIFileParser.dll</HintPath>
+    </Reference>
     <Reference Include="LogicNP.CryptoLicensing.Generator, Version=10.0.0.0, Culture=neutral, PublicKeyToken=4a3c0a4c668b48b4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\LogicNP Software\CryptoLicensing For .Net 2013 R2\LogicNP.CryptoLicensing.Generator.dll</HintPath>
@@ -51,6 +54,10 @@
     <Compile Include="LicenseGenerator.cs" />
     <Compile Include="PayPalInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LICENSE" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

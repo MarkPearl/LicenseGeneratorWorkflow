@@ -7,17 +7,31 @@ namespace CryptoLicenseGenerator
 {
 	public class LicenseEmailGenerator
 	{
+		string _emailSmtpServer = string.Empty; // Server used for sending email
+		int _emailSmtpPort = 25; // Port used for sending email
+		bool _emailUseSsl = false; // If true, SSL is used for sending email
+		string _emailSmtpUsername = string.Empty; // Username for mail server (leave blank if not required)
+		string _emailSmtpPassword = string.Empty; // password for mail server (leave blank if not required)
+		private const string EmailTemplateFile = @"..\..\..\LicenseGeneratorWorkflowDataFiles\EmailTemplate.txt";
 
-		private string email_template = "Email Template Path";
 		string[] placeholders = new string[] { "%%product_name%%", "%%license%%" }; // placeholders used in email template
 		string[] replacements; // initialized in InitPlaceHolders method below
 		string email_subject = "License information"; // Email subject
-		string email_smtp_server = string.Empty; // Server used for sending email
-		int email_smtp_port = 25; // Port used for sending email
-		bool email_use_ssl = false; // If true, SSL is used for sending email
-		string email_smtp_username = string.Empty; // Username for mail server (leave blank if not required)
-		string email_smtp_password = string.Empty; // password for mail server (leave blank if not required)
 		string product_name = "My Product"; // The name of your product
+
+		public LicenseEmailGenerator(
+			string emailSmtpServer, 
+			int emailSmtpPort, 
+			bool emailUseSsl, 
+			string emailSmtpUsername,
+			string emailSmtpPassword)
+		{
+			_emailSmtpServer = emailSmtpServer;
+			_emailSmtpPort = emailSmtpPort;
+			_emailUseSsl = emailUseSsl;
+			_emailSmtpUsername = emailSmtpUsername;
+			_emailSmtpPassword = emailSmtpPassword;
+		}
 
 		public void SendEmail(string emailToAddress, string licenseCode, string emailAddressFrom)
 		{
@@ -27,16 +41,16 @@ namespace CryptoLicenseGenerator
 			message.IsBodyHtml = true;
 			message.Body = GetEmailBody(licenseCode);
 
-			var client = new SmtpClient(email_smtp_server, email_smtp_port);
-			client.EnableSsl = email_use_ssl;
+			var client = new SmtpClient(_emailSmtpServer, _emailSmtpPort);
+			client.EnableSsl = _emailUseSsl;
 
-			if (string.IsNullOrEmpty(email_smtp_username))
+			if (string.IsNullOrEmpty(_emailSmtpUsername))
 			{
 				client.Credentials = new NetworkCredential();
 			}
 			else
 			{
-				client.Credentials = new NetworkCredential(email_smtp_username, email_smtp_password);
+				client.Credentials = new NetworkCredential(_emailSmtpUsername, _emailSmtpPassword);
 			}
 
 			client.DeliveryMethod = SmtpDeliveryMethod.Network;
@@ -47,7 +61,7 @@ namespace CryptoLicenseGenerator
 		string GetEmailBody(string productKey)
 		{
 			InitPlaceHolders(productKey);
-			string body = ReadFile(email_template);
+			string body = ReadFile(EmailTemplateFile);
 			return ReplacePlaceholders(body);
 		}
 
@@ -73,7 +87,6 @@ namespace CryptoLicenseGenerator
 
 		string ReadFile(string filePath)
 		{
-			filePath = LicenseService.GetRealFilePath(filePath);
 			var reader = new StreamReader(filePath);
 			var ret = reader.ReadToEnd();
 			reader.Close();
