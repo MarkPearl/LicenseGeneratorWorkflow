@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using Crypto = LogicNP.CryptoLicensing;
+﻿using System.Collections.Generic;
+using CryptoLicenseGenerator;
 
-namespace CryptoLicenseGenerator
+namespace LicenseGeneratorWorkflow
 {
 	public class CryptoLicenseGeneratorWrapper : LicenseGenerator
 	{
 		private readonly string _licenseFileLocation;
 		private readonly string _licenseCode;
-		private Crypto.CryptoLicenseGenerator _cryptoLicenseGenerator;
+		private LogicNP.CryptoLicensing.CryptoLicenseGenerator _cryptoLicenseGenerator;
 		private bool _settingsLicenseFileSet;
 
 		public CryptoLicenseGeneratorWrapper(string licenseFileLocation, string licenseCode)
@@ -26,7 +25,7 @@ namespace CryptoLicenseGenerator
 
 		private void LoadLicenseFile(string fileName)
 		{
-			_cryptoLicenseGenerator = new Crypto.CryptoLicenseGenerator(fileName);
+			_cryptoLicenseGenerator = new LogicNP.CryptoLicensing.CryptoLicenseGenerator(fileName);
 			_settingsLicenseFileSet = true;
 		}
 
