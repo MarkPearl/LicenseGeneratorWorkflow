@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CryptoLicenseGenerator;
 using IniParser;
-using IniParser.Model;
 using Xunit;
 
-namespace CryptoLicenseGenerator.Unit.Tests
+namespace LicenseGeneratorWorkflow.Unit.Tests
 {
 
     public class LicenseGeneratorTests
@@ -16,12 +12,26 @@ namespace CryptoLicenseGenerator.Unit.Tests
 	    public void ShouldDoSomething()
 	    {
 			var parser = new FileIniDataParser();
-			var parsedData = parser.LoadFile(@"../../../LicenseGeneratorWorkflowDataFiles/LicenseGeneratorWorkflow.ini");
-			var provider = parsedData["GeneralConfiguration"].GetKeyData("smtpProvider");
+			var parsedData = parser.ReadFile(@"../../../LicenseGeneratorWorkflowDataFiles/LicenseGeneratorWorkflow.ini");
 
-		    var cryptoLicenseGeneratorWrapper = new CryptoLicenseGeneratorWrapper();
-		    var licenseEmailGenerator = new LicenseEmailGenerator("", 25, false, "", "");
-		    var licenseGeneratorWorkflow = new LicenseWorkflow(cryptoLicenseGeneratorWrapper, licenseEmailGenerator);
+			var smtpServer = parsedData["SMTP"].GetKeyData("smtpServer").Value;
+			var smtpPort = Convert.ToInt32(parsedData["SMTP"].GetKeyData("smtpPort").Value);
+			var smtpUseSsl = Convert.ToBoolean(parsedData["SMTP"].GetKeyData("smtpUseSsl").Value);
+			var smtpUsername = parsedData["SMTP"].GetKeyData("smtpUsername").Value;
+			var smtpPassword = parsedData["SMTP"].GetKeyData("smtpPassword").Value;
+
+			var cryptoLicenseCode = parsedData["CryptoLicensing"].GetKeyData("LicenseCode").Value;
+		    var licenseFileLocation = parsedData["CryptoLicensing"].GetKeyData("LicenseFileLocation").Value;
+
+		    var emailSubject = parsedData["Email"].GetKeyData("Subject").Value;
+		    var emailTemaplateFileLocation = parsedData["Email"].GetKeyData("TemaplateFileLocation").Value;
+		    var emailProductName = parsedData["Email"].GetKeyData("ProductName").Value;
+		    var emailFrom = parsedData["Email"].GetKeyData("From").Value;
+
+		    var cryptoLicenseGeneratorWrapper = new CryptoLicenseGeneratorWrapper(licenseFileLocation, cryptoLicenseCode);
+			var emailSender = new EmailSender(smtpServer, smtpPort, smtpUseSsl, smtpUsername, smtpPassword);
+		    var licenseEmail = new LicenseEmail(emailFrom, emailProductName, emailSubject, emailTemaplateFileLocation);
+		    var licenseWorkflow = new LicenseWorkflow(cryptoLicenseGeneratorWrapper, emailSender, licenseEmail);
 		    
 			var payPalInfo = new PayPalInfo(
 				"web_accept", 
@@ -29,7 +39,7 @@ namespace CryptoLicenseGenerator.Unit.Tests
 			    "VERIFIED", 
 				"dummyclient", "markpearl@gmail.com", "dummy company");
 
-			licenseGeneratorWorkflow.GenerateLicense(payPalInfo, "Test");
+			licenseWorkflow.Run(payPalInfo, "Test");
 		    Assert.True(true);
 	    }
     }

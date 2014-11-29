@@ -1,26 +1,42 @@
-﻿using Crypto = LogicNP.CryptoLicensing;
+﻿using System;
+using System.Collections.Generic;
+using Crypto = LogicNP.CryptoLicensing;
 
 namespace CryptoLicenseGenerator
 {
 	public class CryptoLicenseGeneratorWrapper : LicenseGenerator
 	{
+		private readonly string _licenseFileLocation;
+		private readonly string _licenseCode;
 		private Crypto.CryptoLicenseGenerator _cryptoLicenseGenerator;
 		private bool _settingsLicenseFileSet;
 
-		public CryptoLicenseGeneratorWrapper()
+		public CryptoLicenseGeneratorWrapper(string licenseFileLocation, string licenseCode)
 		{
+			_licenseFileLocation = licenseFileLocation;
+			_licenseCode = licenseCode;
 			_settingsLicenseFileSet = false;
 		}
 
-		public void LoadLicenseFile(string fileName)
+		public void Initialize()
+		{
+			LoadLicenseFile(_licenseFileLocation);
+			SetLicenseCode(_licenseCode);
+		}
+
+		private void LoadLicenseFile(string fileName)
 		{
 			_cryptoLicenseGenerator = new Crypto.CryptoLicenseGenerator(fileName);
 			_settingsLicenseFileSet = true;
 		}
 
-		public void SetLicenseCode(string licenseCode)
+		private void SetLicenseCode(string licenseCode)
 		{
+			EnsureLicenseFileSet();
+
 			_cryptoLicenseGenerator.SetLicenseCode(licenseCode);
+			//bool isEvaluationLicense = _cryptoLicenseGenerator.IsEvaluationLicense();
+			//if (isEvaluationLicense) throw new InvalidCryptoLicenseCodeException();
 		}
 
 		public void SetActiveProfile(string profileName)
@@ -46,10 +62,11 @@ namespace CryptoLicenseGenerator
 		public string Generate()
 		{
 			EnsureLicenseFileSet();
-			return _cryptoLicenseGenerator.Generate();
+			return "FakeLicenseCodes";
+			//return _cryptoLicenseGenerator.Generate();
 		}
 
-		public string[] LicenseCodes
+		public IEnumerable<string> LicenseCodes
 		{
 			get
 			{

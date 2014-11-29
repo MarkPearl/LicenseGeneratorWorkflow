@@ -1,12 +1,14 @@
-﻿namespace CryptoLicenseGenerator
+﻿using System.Collections.Generic;
+
+namespace CryptoLicenseGenerator
 {
 	public interface LicenseGenerator
 	{
+		void Initialize();
 		void SetActiveProfile(string profileName);
 		string UserData { get; set; }
 		string Generate();
-		string[] LicenseCodes { get; }
+		IEnumerable<string> LicenseCodes { get; }
 		short NumberOfUsers { get; set; }
-		void LoadLicenseFile(string fileName);
 	}
 }

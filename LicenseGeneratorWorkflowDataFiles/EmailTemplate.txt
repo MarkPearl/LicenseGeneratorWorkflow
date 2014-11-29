@@ -1,0 +1,7 @@
+Congradulations!
+
+This is an email to give you your license key.
+
+%%product_name%%
+
+%%license%%
