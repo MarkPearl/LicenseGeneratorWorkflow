@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CryptoLicenseGenerator
+namespace LicenseGeneratorWorkflow
 {
 	public interface LicenseGenerator
 	{

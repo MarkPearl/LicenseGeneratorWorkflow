@@ -20,6 +20,8 @@ namespace LicenseGeneratorWorkflow
 		public void Initialize()
 		{
 			LoadLicenseFile(_licenseFileLocation);
+
+			//See for info on valid license files http://www.ssware.com/support/viewtopic.php?t=734
 			SetLicenseCode(_licenseCode);
 		}
 
@@ -31,11 +33,7 @@ namespace LicenseGeneratorWorkflow
 
 		private void SetLicenseCode(string licenseCode)
 		{
-			EnsureLicenseFileSet();
-
 			_cryptoLicenseGenerator.SetLicenseCode(licenseCode);
-			//bool isEvaluationLicense = _cryptoLicenseGenerator.IsEvaluationLicense();
-			//if (isEvaluationLicense) throw new InvalidCryptoLicenseCodeException();
 		}
 
 		public void SetActiveProfile(string profileName)
@@ -61,8 +59,7 @@ namespace LicenseGeneratorWorkflow
 		public string Generate()
 		{
 			EnsureLicenseFileSet();
-			return "FakeLicenseCodes";
-			//return _cryptoLicenseGenerator.Generate();
+			return _cryptoLicenseGenerator.Generate();
 		}
 
 		public IEnumerable<string> LicenseCodes
