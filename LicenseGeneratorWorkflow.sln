@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LicenseGeneratorWorkflow", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LicenseGeneratorWorkflow.Unit.Tests", "LicenseGeneratorWorkflow.Unit.Tests\LicenseGeneratorWorkflow.Unit.Tests.csproj", "{9B561FBC-DF25-4901-B1BD-49A86C9AE260}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LicenseGeneratorWebService", "LicenseGeneratorWebService\LicenseGeneratorWebService.csproj", "{431DF3F7-44A4-4825-A67F-81AE916C4656}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9B561FBC-DF25-4901-B1BD-49A86C9AE260}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B561FBC-DF25-4901-B1BD-49A86C9AE260}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B561FBC-DF25-4901-B1BD-49A86C9AE260}.Release|Any CPU.Build.0 = Release|Any CPU
+		{431DF3F7-44A4-4825-A67F-81AE916C4656}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{431DF3F7-44A4-4825-A67F-81AE916C4656}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{431DF3F7-44A4-4825-A67F-81AE916C4656}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{431DF3F7-44A4-4825-A67F-81AE916C4656}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
