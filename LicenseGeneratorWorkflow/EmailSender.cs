@@ -1,8 +1,8 @@
 using System.Net;
 using System.Net.Mail;
-using LogicNP.CryptoLicensing;
+using LicenseGeneratorWorkflow.Settings;
 
-namespace CryptoLicenseGenerator
+namespace LicenseGeneratorWorkflow
 {
 	public class EmailSender
 	{
@@ -12,18 +12,13 @@ namespace CryptoLicenseGenerator
 		private readonly string _emailSmtpUsername;
 		private readonly string _emailSmtpPassword;
 
-		public EmailSender(
-			string emailSmtpServer,
-			int emailSmtpPort,
-			bool emailUseSsl,
-			string emailSmtpUsername,
-			string emailSmtpPassword)
+		public EmailSender(SmtpSettings smtpSettings)
 		{
-			_emailSmtpServer = emailSmtpServer;
-			_emailSmtpPort = emailSmtpPort;
-			_emailUseSsl = emailUseSsl;
-			_emailSmtpUsername = emailSmtpUsername;
-			_emailSmtpPassword = emailSmtpPassword;
+            _emailSmtpServer = smtpSettings.Server;
+            _emailSmtpPort = smtpSettings.Port;
+            _emailUseSsl = smtpSettings.UseSsl;
+            _emailSmtpUsername = smtpSettings.Username;
+            _emailSmtpPassword = smtpSettings.Password;
 		}
 
 		public void SendEmail(MailMessage message)

@@ -1,5 +1,6 @@
 using System.IO;
 using System.Net.Mail;
+using LicenseGeneratorWorkflow.Settings;
 
 namespace CryptoLicenseGenerator
 {
@@ -12,16 +13,12 @@ namespace CryptoLicenseGenerator
 		private readonly string[] _placeholders = { "%%product_name%%", "%%license%%" }; 
 		private string[] _replacements;
 
-		public LicenseEmail(
-			string emailAddressFrom, 
-			string productName, 
-			string subject, 
-			string emailTemplateFile)
+		public LicenseEmail(EmailSettings emailSettings)
 		{
-			_emailAddressFrom = emailAddressFrom;
-			_productName = productName;
-			_subject = subject;
-			_emailTemplateFile = emailTemplateFile;
+            _emailAddressFrom = emailSettings.From;
+		    _productName = emailSettings.ProductName;
+            _subject = emailSettings.Subject;
+            _emailTemplateFile = emailSettings.TemaplateFileLocation;
 		}
 
 		public MailMessage ConstructEmail(string emailToAddress, string licenseCode)

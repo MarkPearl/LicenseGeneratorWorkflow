@@ -47,6 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Settings\CryptoLicenseSettings.cs" />
+    <Compile Include="Settings\EmailSettings.cs" />
+    <Compile Include="Settings\GeneralSettings.cs" />
     <Compile Include="LicenseEmail.cs" />
     <Compile Include="InvalidCryptoLicenseCodeException.cs" />
     <Compile Include="LicenseWorkflow.cs" />
@@ -56,6 +59,8 @@
     <Compile Include="LicenseGenerator.cs" />
     <Compile Include="PayPalInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings\SettingsRepository.cs" />
+    <Compile Include="Settings\SmtpSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

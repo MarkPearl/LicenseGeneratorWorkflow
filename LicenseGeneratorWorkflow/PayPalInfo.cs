@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CryptoLicenseGenerator
+namespace LicenseGeneratorWorkflow
 {
 	public class PayPalInfo
 	{

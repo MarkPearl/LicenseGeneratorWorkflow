@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CryptoLicenseGenerator;
+using LicenseGeneratorWorkflow.Settings;
 
 namespace LicenseGeneratorWorkflow
 {
@@ -10,10 +11,12 @@ namespace LicenseGeneratorWorkflow
 		private LogicNP.CryptoLicensing.CryptoLicenseGenerator _cryptoLicenseGenerator;
 		private bool _settingsLicenseFileSet;
 
-		public CryptoLicenseGeneratorWrapper(string licenseFileLocation, string licenseCode)
+
+
+		public CryptoLicenseGeneratorWrapper(CryptoLicenseSettings cryptoLicenseSettings)
 		{
-			_licenseFileLocation = licenseFileLocation;
-			_licenseCode = licenseCode;
+            _licenseFileLocation = cryptoLicenseSettings.LicenseFileLocation;
+            _licenseCode = cryptoLicenseSettings.LicenseCode;
 			_settingsLicenseFileSet = false;
 		}
 
