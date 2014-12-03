@@ -12,6 +12,9 @@ namespace LicenseGeneratorWorkflow.Settings
             var parser = new FileIniDataParser();
             var parsedData = parser.ReadFile(@"../../../LicenseGeneratorWorkflowDataFiles/LicenseGeneratorWorkflow.ini");
 
+            generalSettings.PayPalSettings.IpnReceiverEmail = parsedData["PayPal"].GetKeyData("ipnReceiverEmail").Value;
+            generalSettings.PayPalSettings.IpnValidationUrl = parsedData["PayPal"].GetKeyData("ipnValidationUrl").Value;
+
             generalSettings.SmtpSettings.Server = parsedData["SMTP"].GetKeyData("smtpServer").Value;
             generalSettings.SmtpSettings.Port = Convert.ToInt32(parsedData["SMTP"].GetKeyData("smtpPort").Value);
             generalSettings.SmtpSettings.UseSsl = Convert.ToBoolean(parsedData["SMTP"].GetKeyData("smtpUseSsl").Value);

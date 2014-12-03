@@ -27,9 +27,9 @@ namespace LicenseGeneratorWebService.Controllers
             var cryptoLicenseGeneratorWrapper = new CryptoLicenseGeneratorWrapper(settings.CryptoLicenseSettings);
             var emailSender = new EmailSender(settings.SmtpSettings);
             var licenseEmail = new LicenseEmail(settings.EmailSettings);
-		    var licenseWorkflow = new LicenseWorkflow(cryptoLicenseGeneratorWrapper, emailSender, licenseEmail);
+            var licenseWorkflow = new PaypalLicenseWorkflow(cryptoLicenseGeneratorWrapper, emailSender, licenseEmail, settings.PayPalSettings);
 
-            
+
 
             //licenseWorkflow.Run();
 
@@ -44,11 +44,15 @@ namespace LicenseGeneratorWebService.Controllers
             var mcgross = Convert.ToDecimal(requestInfo["mc_gross"]);
             var tax = Convert.ToDecimal(requestInfo["tax"]);
             var receiveremail = requestInfo["receiver_email"];
+            var receiverid = requestInfo["receiver_id"];
+            var residencecountry = requestInfo["residence_country"];
+            var testipn = requestInfo["test_ipn"];
+            var transactionsubject = requestInfo["transaction_subject"];
             var payerUserName = requestInfo["payer_id"];
             var payerEmail = requestInfo["payer_email"];
             var payerBusinessName = requestInfo["payer_business_name"];
 
-            return new PayPalInfo(ipnTxnType, itemNumber, quantity, mcgross, tax, receiveremail, "", payerUserName, payerEmail, payerBusinessName);
+            return new PayPalInfo(ipnTxnType, itemNumber, quantity, mcgross, tax, receiveremail, payerUserName, payerEmail, payerBusinessName);
 
         }
     }
