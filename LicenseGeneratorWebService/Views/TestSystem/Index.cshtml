@@ -1,11 +1,19 @@
 ﻿@model LicenseGeneratorWebService.Controllers.SystemResults
 @{
-    ViewBag.Title = "TestSystemView";
+    ViewBag.Title = "System Settings";
 }
 
-<h2>TestSystemView</h2>
+<div id="body">
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>System Settings</h1>
+            </hgroup>
 
-<h3>@Model.SettingsFileLocation</h3>
-<h3>@Model.Settings.CryptoLicenseSettings.LicenseFileLocation</h3>
-<h3>@Model.Settings.CryptoLicenseSettings.LicenseCode</h3>
+            <h3>@Model.SettingsFileLocation</h3>
+            <h3>@Model.Settings.CryptoLicenseSettings.LicenseFileLocation</h3>
+            <h3>@Model.Settings.CryptoLicenseSettings.LicenseCode</h3>
+        </div>
+    </section>
+</div>
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using CryptoLicenseGenerator;
 using IniParser;
 using LicenseGeneratorWorkflow.Settings;
 using Xunit;

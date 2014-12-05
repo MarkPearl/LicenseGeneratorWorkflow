@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using CryptoLicenseGenerator;
+using LicenseGeneratorWorkflow.Exceptions;
 using LicenseGeneratorWorkflow.Settings;
 
 namespace LicenseGeneratorWorkflow

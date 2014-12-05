@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace CryptoLicenseGenerator
+namespace LicenseGeneratorWorkflow.Exceptions
 {
 	[Serializable]
 	public class LicenseFileNotSetException : Exception

@@ -1,5 +1,4 @@
 ﻿using System.Web.Services.Protocols;
-using CryptoLicenseGenerator;
 using LicenseGeneratorWorkflow.Settings;
 
 namespace LicenseGeneratorWorkflow

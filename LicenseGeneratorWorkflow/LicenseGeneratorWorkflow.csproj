@@ -49,17 +49,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataDumper.cs" />
+    <Compile Include="Exceptions\InvalidCryptoLicenseCodeException.cs" />
+    <Compile Include="Exceptions\LicenseFileNotSetException.cs" />
     <Compile Include="LicenseWorkflow.cs" />
     <Compile Include="PaypalIpnValidation.cs" />
     <Compile Include="Settings\CryptoLicenseSettings.cs" />
     <Compile Include="Settings\EmailSettings.cs" />
     <Compile Include="Settings\GeneralSettings.cs" />
     <Compile Include="LicenseEmail.cs" />
-    <Compile Include="InvalidCryptoLicenseCodeException.cs" />
     <Compile Include="PaypalLicenseWorkflow.cs" />
     <Compile Include="CryptoLicenseGeneratorWrapper.cs" />
     <Compile Include="EmailSender.cs" />
-    <Compile Include="LicenseFileNotSetException.cs" />
     <Compile Include="LicenseGenerator.cs" />
     <Compile Include="PayPalInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
