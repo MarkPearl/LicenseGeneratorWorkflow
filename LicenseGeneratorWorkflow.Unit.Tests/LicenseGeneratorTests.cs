@@ -33,7 +33,7 @@ namespace LicenseGeneratorWorkflow.Unit.Tests
 
             var cryptoLicenseGeneratorWrapper = new CryptoLicenseGeneratorWrapper(cryptoLicenseSettings);
 			var emailSender = new EmailSender(smtpSettings);
-		    var licenseEmail = new LicenseEmail(emailSettings);
+		    var licenseEmail = new UserLicenseEmail(emailSettings, new TemplateToMessageConverter());
 	        var paypalSettings = new PayPalSettings();
 	        var paypalValidation = new PaypalIpnValidation(paypalSettings);
 	        var productProfileSettings = new ProductProfileSettings();

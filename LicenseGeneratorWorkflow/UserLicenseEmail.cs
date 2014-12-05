@@ -1,26 +1,31 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Mail;
 using LicenseGeneratorWorkflow.Settings;
 
 namespace LicenseGeneratorWorkflow
 {
-	public class LicenseEmail
+    public class UserLicenseEmail
 	{
-		private readonly string _emailAddressBcc;
+        private readonly TemplateToMessageConverter _templateToMessageConverter;
+        private readonly string _emailAddressBcc;
 		private readonly string _emailAddressFrom;
 		private readonly string _productName;
 		private readonly string _subject;
 		private readonly string _emailTemplateFile;
-		private readonly string[] _placeholders = { "%%product_name%%", "%%license%%" }; 
-		private string[] _replacements;
+        private readonly Dictionary<string, string> _placeholders; 
 
-		public LicenseEmail(EmailSettings emailSettings)
+		public UserLicenseEmail(
+            EmailSettings emailSettings, 
+            TemplateToMessageConverter templateToMessageConverter)
 		{
-            _emailAddressBcc = emailSettings.Bcc;
+		    _templateToMessageConverter = templateToMessageConverter;
+		    _emailAddressBcc = emailSettings.Bcc;
             _emailAddressFrom = emailSettings.From;
 		    _productName = emailSettings.ProductName;
             _subject = emailSettings.Subject;
             _emailTemplateFile = emailSettings.TemaplateFileLocation;
+            _placeholders = new Dictionary<string, string>();
 		}
 
 		public MailMessage ConstructEmail(string emailToAddress, string licenseCode)
@@ -40,32 +45,17 @@ namespace LicenseGeneratorWorkflow
 		string EmailBody(string licenseCode, string productName)
 		{
 			InitPlaceHolders(licenseCode, productName);
-			var bodyTemplate = ReadFile(_emailTemplateFile);
-			return ReplacePlaceholders(bodyTemplate);
+		    var bodyTemplate = File.ReadAllText(_emailTemplateFile);
+		    return _templateToMessageConverter.Convert(bodyTemplate, _placeholders);
+
 		}
 
 		void InitPlaceHolders(string licenseCode, string productName)
 		{
-			_replacements = new string[_placeholders.Length];
-			_replacements[0] = productName;
-			_replacements[1] = licenseCode;
+            _placeholders.Clear();
+            _placeholders.Add("product_name", productName);
+            _placeholders.Add("license", licenseCode);
 		}
 
-		string ReplacePlaceholders(string text)
-		{
-			for (int i = 0; i < _placeholders.Length; i++)
-			{
-				text = text.Replace(_placeholders[i], _replacements[i]);
-			}
-			return text;
-		}
-
-		string ReadFile(string filePath)
-		{
-			var reader = new StreamReader(filePath);
-			var ret = reader.ReadToEnd();
-			reader.Close();
-			return ret;
-		}
 	}
 }
