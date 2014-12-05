@@ -11,8 +11,6 @@ namespace LicenseGeneratorWorkflow
 		private LogicNP.CryptoLicensing.CryptoLicenseGenerator _cryptoLicenseGenerator;
 		private bool _settingsLicenseFileSet;
 
-
-
 		public CryptoLicenseGeneratorWrapper(CryptoLicenseSettings cryptoLicenseSettings)
 		{
             _licenseFileLocation = cryptoLicenseSettings.LicenseFileLocation;

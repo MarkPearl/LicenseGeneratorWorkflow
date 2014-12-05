@@ -8,8 +8,10 @@
             CryptoLicenseSettings = new CryptoLicenseSettings();
             EmailSettings = new EmailSettings();
             PayPalSettings = new PayPalSettings();
+            ProductProfileSettings = new ProductProfileSettings();
         }
 
+        public ProductProfileSettings ProductProfileSettings { get; private set; }
         public PayPalSettings PayPalSettings { get; private set; }
         public EmailSettings EmailSettings { get; private set; }
         public CryptoLicenseSettings CryptoLicenseSettings { get; private set; }

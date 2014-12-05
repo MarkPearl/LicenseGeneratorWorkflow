@@ -53,6 +53,7 @@
     <Compile Include="PayPalInfoTests.cs" />
     <Compile Include="PaypalIpnValidationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Temp.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -2,6 +2,6 @@
 {
     public interface LicenseWorkflow
     {
-        void Run(PayPalInfo payPalInfo, string licenseTypeProfile);
+        void Run(PayPalInfo payPalInfo);
     }
 }

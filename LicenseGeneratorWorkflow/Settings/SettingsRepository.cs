@@ -1,16 +1,24 @@
 ﻿using System;
+using System.Linq;
 using IniParser;
 
 namespace LicenseGeneratorWorkflow.Settings
 {
     public class SettingsRepository
     {
+        private readonly string _settingsFileLocation;
+
+        public SettingsRepository(string settingsFileLocation)
+        {
+            _settingsFileLocation = settingsFileLocation;
+        }
+
         public GeneralSettings Load()
         {
             var generalSettings = new GeneralSettings();
 
             var parser = new FileIniDataParser();
-            var parsedData = parser.ReadFile(@"../../../LicenseGeneratorWorkflowDataFiles/LicenseGeneratorWorkflow.ini");
+            var parsedData = parser.ReadFile(_settingsFileLocation);
 
             generalSettings.PayPalSettings.IpnReceiverEmail = parsedData["PayPal"].GetKeyData("ipnReceiverEmail").Value;
             generalSettings.PayPalSettings.IpnValidationUrl = parsedData["PayPal"].GetKeyData("ipnValidationUrl").Value;
@@ -28,6 +36,15 @@ namespace LicenseGeneratorWorkflow.Settings
             generalSettings.EmailSettings.TemaplateFileLocation = parsedData["Email"].GetKeyData("TemaplateFileLocation").Value;
             generalSettings.EmailSettings.ProductName = parsedData["Email"].GetKeyData("ProductName").Value;
             generalSettings.EmailSettings.From = parsedData["Email"].GetKeyData("From").Value;
+            generalSettings.EmailSettings.Bcc = parsedData["Email"].GetKeyData("Bcc").Value;
+
+
+            var productProfiles = parsedData["ProductLicenseProfiles"];
+            for (var i = 0; i < productProfiles.Count; i++)
+            {
+                var item = productProfiles.ElementAt(i);
+                generalSettings.ProductProfileSettings.Add(item.KeyName, item.Value);
+            }
 
             return generalSettings;
         }

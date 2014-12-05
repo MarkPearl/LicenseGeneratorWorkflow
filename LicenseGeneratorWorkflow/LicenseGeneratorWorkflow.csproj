@@ -48,7 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataDumper.cs" />
     <Compile Include="LicenseWorkflow.cs" />
+    <Compile Include="PaypalIpnValidation.cs" />
     <Compile Include="Settings\CryptoLicenseSettings.cs" />
     <Compile Include="Settings\EmailSettings.cs" />
     <Compile Include="Settings\GeneralSettings.cs" />

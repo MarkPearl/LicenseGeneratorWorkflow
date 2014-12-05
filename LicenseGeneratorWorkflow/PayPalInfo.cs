@@ -1,240 +1,61 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Specialized;
 using System.Web;
 
 namespace LicenseGeneratorWorkflow
 {
-    public class IndexedKeyValuePair : IEnumerable<Tuple<string, string>>
-    {
-        private readonly List<Tuple<string, string>> _collection;
-
-        public IndexedKeyValuePair()
-        {
-            _collection = new List<Tuple<string, string>>();
-        }
-
-        public void Add(string key, string value)
-        {
-            _collection.Add(new Tuple<string, string>(key, value));
-        }
-
-        public IEnumerator<Tuple<string, string>> GetEnumerator()
-        {
-            return _collection.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-    }
-
     public class PayPalInfo
     {
-        private const string PayPalAccountEmail = "Mark@MaximaSoftware.co.za";
-        private const string ItemNumber = "";
-        private const decimal ItemCostPerUnit = 100;
+        private readonly NameValueCollection _nameValueCollection;
 
-        private readonly string _receiverEmail;
-        private readonly string _receiverId;
-        private readonly string _residenceCountry;
-        private readonly string _testIpn;
-        private readonly string _transactionSubject;
-        private readonly string _txnId;
-        private readonly string _txnType;
-        private readonly decimal _mcGross;
-        private readonly string _paymentDate;
-        private readonly decimal _paymentFee;
-        private readonly decimal _paymentGross;
-        private readonly string _paymentStatus;
-        private readonly string _paymentType;
-        private readonly string _protectionEligibility;
-        private readonly short _quantity;
-        private readonly decimal _shipping;
-        private readonly decimal _tax;
-        private readonly string _notifyVersion;
-        private readonly string _charset;
-        private readonly string _verifySign;
-        private decimal _ipnTax;
-        private readonly string _payerUserName;
-        private readonly string _payerStatus;
-        private readonly string _firstName;
-        private readonly string _lastName;
-        private readonly string _addressCity;
-        private readonly string _addressCountry;
-        private readonly string _addressCountryCode;
-        private readonly string _addressName;
-        private readonly string _addressState;
-        private readonly string _addressStatus;
-        private readonly string _addressStreet;
-        private readonly string _addressZip;
-        private readonly string _custom;
-        private readonly decimal _handlingAmount;
-        private readonly string _itemName;
-        private readonly string _itemNumber;
-        private readonly string _mcCurrency;
-        private readonly decimal _mcFee;
-        private readonly string _payerEmail;
-        private readonly string _payerCompany;
-
-
-        public PayPalInfo(
-            string receiverEmail,
-            string receiverId,
-            string residenceCountry,
-            string testIpn,
-            string transactionSubject,
-            string txnId,
-            string txnType,
-            string payerEmail,
-            string payerUserName,
-            string payerStatus,
-            string firstName,
-            string lastName,
-            string addressCity,
-            string addressCountry,
-            string addressCountryCode,
-            string addressName,
-            string addressState,
-            string addressStatus,
-            string addressStreet,
-            string addressZip,
-            string custom,
-            decimal handlingAmount,
-            string itemName,
-            string itemNumber,
-            string mcCurrency,
-            decimal mcFee,
-            decimal mcGross,
-            string paymentDate,
-            decimal paymentFee,
-            decimal paymentGross,
-            string paymentStatus,
-            string paymentType,
-            string protectionEligibility,
-            short quantity,
-            decimal shipping,
-            decimal tax,
-            string notifyVersion,
-            string charset,
-            string verifySign
-            )
+        public PayPalInfo()
         {
-            _receiverEmail = receiverEmail;
-            _receiverId = receiverId;
-            _residenceCountry = residenceCountry;
-            _testIpn = testIpn;
-            _transactionSubject = transactionSubject;
-            _txnId = txnId;
-            _txnType = txnType;
-            _payerEmail = payerEmail;
-            _payerUserName = payerUserName;
-            _payerStatus = payerStatus;
-            _firstName = firstName;
-            _lastName = lastName;
-            _addressCity = addressCity;
-            _addressCountry = addressCountry;
-            _addressCountryCode = addressCountryCode;
-            _addressName = addressName;
-            _addressState = addressState;
-            _addressStatus = addressStatus;
-            _addressStreet = addressStreet;
-            _addressZip = addressZip;
-            _custom = custom;
-            _handlingAmount = handlingAmount;
-            _itemName = itemName;
-            _itemNumber = itemNumber;
-            _mcCurrency = mcCurrency;
-            _mcFee = mcFee;
-            _mcGross = mcGross;
-            _paymentDate = paymentDate;
-            _paymentFee = paymentFee;
-            _paymentGross = paymentGross;
-            _paymentStatus = paymentStatus;
-            _paymentType = paymentType;
-            _protectionEligibility = protectionEligibility;
-            _quantity = quantity;
-            _shipping = shipping;
-            _tax = tax;
-            _notifyVersion = notifyVersion;
-            _charset = charset;
-            _verifySign = verifySign;
+            _nameValueCollection = new NameValueCollection();
         }
 
-        public PayPalInfo(
-            string ipnTxnType,
-            string ipnItemNumber,
-            short ipnQuantity,
-            Decimal mcGross,
-            Decimal ipnTax,
-            string ipnReceiverEmail,
-            string payerUserName,
-            string payerEmail,
-            string payerCompany
-            )
+        public PayPalInfo(NameValueCollection nameValueCollection)
         {
-            _txnType = ipnTxnType;
-            _itemNumber = ipnItemNumber;
-            _quantity = ipnQuantity;
-            _mcGross = mcGross;
-            _ipnTax = ipnTax;
-            _receiverEmail = ipnReceiverEmail;
-            _payerUserName = payerUserName;
-            _payerEmail = payerEmail;
-            _payerCompany = payerCompany;
-
-            VerifyTransactionType();
-            VerifyProductNumber();
-            VerifyCostTotals();
-            VerifyReceiverEmail();
+            _nameValueCollection = nameValueCollection;
         }
 
         public string IpnReceiverEmail
         {
-            get { return _receiverEmail; }
-        }
-
-        public decimal IpnTax
-        {
-            get { return _ipnTax; }
-            set { _ipnTax = value; }
+            get { return _nameValueCollection["receiver_email"]; }
         }
 
         public decimal McGross
         {
-            get { return _mcGross; }
+            get { return Convert.ToDecimal(_nameValueCollection["mc_gross"]); }
         }
 
         public short IpnQuantity
         {
-            get { return _quantity; }
+            get { return Convert.ToInt16(_nameValueCollection["quantity"]); }
         }
 
         public string IpnItemNumber
         {
-            get { return _itemNumber; }
+            get { return _nameValueCollection["item_number"]; }
         }
 
         public string IpnTxnType
         {
-            get { return _txnType; }
+            get { return _nameValueCollection["txn_type"]; }
         }
 
         public string PayerEmail
         {
-            get { return _payerEmail; }
+            get { return _nameValueCollection["payer_email"]; }
         }
 
         public string PayerUserName
         {
-            get { return _payerUserName; }
+            get { return _nameValueCollection["payer_id"]; }
         }
 
         public string PayerCompany
         {
-            get { return _payerCompany; }
+            get { return string.Empty; }
         }
 
         public string UserData
@@ -247,247 +68,188 @@ namespace LicenseGeneratorWorkflow
 
         public string ReceiverId
         {
-            get { return _receiverId; }
+            get { return _nameValueCollection["receiver_id"]; }
         }
 
         public string ResidenceCountry
         {
-            get { return _residenceCountry; }
+            get { return _nameValueCollection["residence_country"]; }
         }
 
         public string TestIpn
         {
-            get { return _testIpn; }
+            get { return _nameValueCollection["test_ipn"]; }
         }
 
         public string TransactionSubject
         {
-            get { return _transactionSubject; }
+            get { return _nameValueCollection["transaction_subject"]; }
         }
 
         public string TxnId
         {
-            get { return _txnId; }
+            get { return _nameValueCollection["txn_id"]; }
         }
 
         public string PaymentDate
         {
-            get { return _paymentDate; }
+            get { return _nameValueCollection["payment_date"]; }
         }
 
         public decimal PaymentFee
         {
-            get { return _paymentFee; }
+            get { return Convert.ToDecimal(_nameValueCollection["payment_fee"]); }
         }
 
         public decimal PaymentGross
         {
-            get { return _paymentGross; }
+            get { return Convert.ToDecimal(_nameValueCollection["payment_gross"]); }
         }
 
         public string PaymentStatus
         {
-            get { return _paymentStatus; }
+            get { return _nameValueCollection["payment_status"]; }
         }
 
         public string PaymentType
         {
-            get { return _paymentType; }
+            get { return _nameValueCollection["payment_type"]; }
         }
 
         public string ProtectionEligibility
         {
-            get { return _protectionEligibility; }
+            get { return _nameValueCollection["protection_eligibility"]; }
         }
 
         public decimal Shipping
         {
-            get { return _shipping; }
+            get { return Convert.ToDecimal(_nameValueCollection["shipping"]); }
         }
 
         public decimal Tax
         {
-            get { return _tax; }
+            get { return Convert.ToDecimal(_nameValueCollection["tax"]); }
         }
 
         public string NotifyVersion
         {
-            get { return _notifyVersion; }
+            get { return _nameValueCollection["notify_version"]; }
         }
 
         public string Charset
         {
-            get { return _charset; }
+            get { return _nameValueCollection["charset"]; }
         }
 
         public string VerifySign
         {
-            get { return _verifySign; }
+            get { return _nameValueCollection["verify_sign"]; }
         }
 
         public string PayerStatus
         {
-            get { return _payerStatus; }
+            get { return _nameValueCollection["payer_status"]; }
         }
 
         public string FirstName
         {
-            get { return _firstName; }
+            get { return _nameValueCollection["first_name"]; }
         }
 
         public string LastName
         {
-            get { return _lastName; }
+            get { return _nameValueCollection["last_name"]; }
         }
 
         public string AddressCity
         {
-            get { return _addressCity; }
+            get { return _nameValueCollection["address_city"]; }
         }
 
         public string AddressCountry
         {
-            get { return _addressCountry; }
+            get { return _nameValueCollection["address_country"]; }
         }
 
         public string AddressCountryCode
         {
-            get { return _addressCountryCode; }
+            get { return _nameValueCollection["address_country_code"]; }
         }
 
         public string AddressName
         {
-            get { return _addressName; }
+            get { return _nameValueCollection["address_name"]; }
         }
 
         public string AddressState
         {
-            get { return _addressState; }
+            get { return _nameValueCollection["address_state"]; }
         }
 
         public string AddressStatus
         {
-            get { return _addressStatus; }
+            get { return _nameValueCollection["address_status"]; }
         }
 
         public string AddressStreet
         {
-            get { return _addressStreet; }
+            get { return _nameValueCollection["address_street"]; }
         }
 
         public string AddressZip
         {
-            get { return _addressZip; }
+            get { return _nameValueCollection["address_zip"]; }
         }
 
         public string Custom
         {
-            get { return _custom; }
+            get { return _nameValueCollection["custom"]; }
         }
 
         public decimal HandlingAmount
         {
-            get { return _handlingAmount; }
+            get { return Convert.ToDecimal(_nameValueCollection["handling_amount"]); }
         }
 
         public string ItemName
         {
-            get { return _itemName; }
+            get { return _nameValueCollection["item_name"]; }
         }
 
         public string McCurrency
         {
-            get { return _mcCurrency; }
+            get { return _nameValueCollection["mc_currency"]; }
         }
 
         public decimal McFee
         {
-            get { return _mcFee; }
+            get { return Convert.ToDecimal(_nameValueCollection["mc_fee"]); }
         }
 
-        private void VerifyTransactionType()
+        public NameValueCollection NameValueCollection
         {
-            if (_txnType != "web_accept")
-                throw new Exception("ipn_txn_type is not 'web_accept'");
+            get { return _nameValueCollection; }
         }
 
-        private void VerifyProductNumber()
-        {
-            if (_itemNumber != ItemNumber)
-                throw new Exception("ipn_item_number not equal to defined item number");
-        }
-
-        private void VerifyCostTotals()
-        {
-            var checksumTotal = _quantity * ItemCostPerUnit + _ipnTax;
-            if (checksumTotal != _mcGross)
-                throw new Exception("Cost does not match");
-        }
-
-        private void VerifyReceiverEmail()
-        {
-            if (_receiverEmail.ToUpper() != PayPalAccountEmail.ToUpper())
-                throw new Exception();
-        }
 
         public string SerializedMessage()
         {
-            var data = new IndexedKeyValuePair();
-            data.Add("mc_gross", _mcGross.ToString());
-            data.Add("protection_eligibility", _protectionEligibility);
-            data.Add("address_status", _addressStatus);
-            data.Add("payer_id", _payerUserName);
-            data.Add("tax", _tax.ToString("F"));
-            data.Add("address_street", _addressStreet);
-            data.Add("payment_date", _paymentDate);
-            data.Add("payment_status", _paymentStatus);
-            data.Add("charset", _charset);
-            data.Add("address_zip", _addressZip);
-            data.Add("first_name", _firstName);
-            data.Add("mc_fee", _mcFee.ToString("F"));
-            data.Add("address_country_code", _addressCountryCode);
-            data.Add("address_name", _addressName);
-            data.Add("notify_version", _notifyVersion);
-            data.Add("custom", _custom);
-            data.Add("payer_status", _payerStatus);
-            data.Add("address_country", _addressCountry);
-            data.Add("address_city", _addressCity);
-            data.Add("quantity", _quantity.ToString());
-            data.Add("verify_sign", _verifySign);
-            data.Add("payer_email", _payerEmail);
-            data.Add("txn_id", _txnId);
-            data.Add("payment_type", _paymentType);
-            data.Add("last_name", _lastName);
-            data.Add("address_state", _addressState);
-            data.Add("receiver_email", _receiverEmail);
-            data.Add("payment_fee", _paymentFee.ToString("F"));
-            data.Add("receiver_id", _receiverId);
-            data.Add("txn_type", _txnType);
-            data.Add("item_name", _itemName);
-            data.Add("mc_currency", _mcCurrency);
-            data.Add("item_number", _itemNumber);
-            data.Add("residence_country", _residenceCountry);
-            data.Add("test_ipn", _testIpn);
-            data.Add("handling_amount", _handlingAmount.ToString("F"));
-            data.Add("transaction_subject", _transactionSubject);
-            data.Add("payment_gross", _paymentGross.ToString("F"));
-            data.Add("shipping", _shipping.ToString("F"));
-
-            return CollateData(data);
+            return CollateData(_nameValueCollection);
         }
 
-        private string CollateData(IndexedKeyValuePair data)
+        private string CollateData(NameValueCollection data)
         {
             var result = string.Empty;
 
-            for (var i = 0; i < data.Count() - 1; i++)
+            for (var i = 0; i < data.Count; i++)
             {
-                var item = data.ElementAt(i);
-                result += MergeData(item) + "&";
+                var key = data.GetKey(i);
+                var value = data.Get(i);
+
+                result += MergeData(key, value);
+                if (i < data.Count - 1) result += "&";
             }
 
-            var endItem = data.ElementAt(data.Count() - 1);
-            result += MergeData(endItem);
             return result;
         }
 
@@ -495,11 +257,5 @@ namespace LicenseGeneratorWorkflow
         {
             return string.Format("{0}={1}", field, HttpUtility.UrlEncode(value));
         }
-
-        private string MergeData(Tuple<string,string> entry)
-        {
-            return MergeData(entry.Item1, entry.Item2);
-        }
-
     }
 }

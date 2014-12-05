@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Web;
 using System.Web.Http;
-using CryptoLicenseGenerator;
 using LicenseGeneratorWorkflow;
 using LicenseGeneratorWorkflow.Settings;
 
@@ -21,39 +18,28 @@ namespace LicenseGeneratorWebService.Controllers
             var paypalInfo = GetFromRequest(requestInfo);
 
 
-            var settingsRepository = new SettingsRepository();
+            var settingsRepository = new SettingsRepository(System.Web.Configuration.WebConfigurationManager.AppSettings["SettingsFileLocation"]);
             var settings = settingsRepository.Load();
 
             var cryptoLicenseGeneratorWrapper = new CryptoLicenseGeneratorWrapper(settings.CryptoLicenseSettings);
             var emailSender = new EmailSender(settings.SmtpSettings);
             var licenseEmail = new LicenseEmail(settings.EmailSettings);
-            var licenseWorkflow = new PaypalLicenseWorkflow(cryptoLicenseGeneratorWrapper, emailSender, licenseEmail, settings.PayPalSettings);
+            var payPalValidation = new PaypalIpnValidation(settings.PayPalSettings);
+            var licenseWorkflow = new PaypalLicenseWorkflow(
+                cryptoLicenseGeneratorWrapper,
+                emailSender,
+                licenseEmail,
+                payPalValidation,
+                settings.ProductProfileSettings);
 
+            licenseWorkflow.Run(paypalInfo);
 
-
-            //licenseWorkflow.Run();
-
-            return Ok("Hello");
+            return Ok("Success");
         }
 
         private PayPalInfo GetFromRequest(NameValueCollection requestInfo)
         {
-            var ipnTxnType = requestInfo["txn_type"];
-            var itemNumber = requestInfo["item_number"];
-            var quantity = Convert.ToInt16(requestInfo["quantity"]);
-            var mcgross = Convert.ToDecimal(requestInfo["mc_gross"]);
-            var tax = Convert.ToDecimal(requestInfo["tax"]);
-            var receiveremail = requestInfo["receiver_email"];
-            var receiverid = requestInfo["receiver_id"];
-            var residencecountry = requestInfo["residence_country"];
-            var testipn = requestInfo["test_ipn"];
-            var transactionsubject = requestInfo["transaction_subject"];
-            var payerUserName = requestInfo["payer_id"];
-            var payerEmail = requestInfo["payer_email"];
-            var payerBusinessName = requestInfo["payer_business_name"];
-
-            return new PayPalInfo(ipnTxnType, itemNumber, quantity, mcgross, tax, receiveremail, payerUserName, payerEmail, payerBusinessName);
-
+            return new PayPalInfo(requestInfo);
         }
     }
 }

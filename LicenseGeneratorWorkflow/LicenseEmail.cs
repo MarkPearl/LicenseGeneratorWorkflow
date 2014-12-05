@@ -2,10 +2,11 @@ using System.IO;
 using System.Net.Mail;
 using LicenseGeneratorWorkflow.Settings;
 
-namespace CryptoLicenseGenerator
+namespace LicenseGeneratorWorkflow
 {
 	public class LicenseEmail
 	{
+		private readonly string _emailAddressBcc;
 		private readonly string _emailAddressFrom;
 		private readonly string _productName;
 		private readonly string _subject;
@@ -15,6 +16,7 @@ namespace CryptoLicenseGenerator
 
 		public LicenseEmail(EmailSettings emailSettings)
 		{
+            _emailAddressBcc = emailSettings.Bcc;
             _emailAddressFrom = emailSettings.From;
 		    _productName = emailSettings.ProductName;
             _subject = emailSettings.Subject;
@@ -27,6 +29,7 @@ namespace CryptoLicenseGenerator
 			message.From = new MailAddress(_emailAddressFrom);
 			message.Subject = _subject;
 			message.To.Add(emailToAddress);
+			message.Bcc.Add(_emailAddressBcc);
 			message.IsBodyHtml = true;
 			message.Body = EmailBody(licenseCode, _productName);
 			message.IsBodyHtml = false;

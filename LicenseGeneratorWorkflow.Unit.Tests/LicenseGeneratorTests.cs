@@ -36,19 +36,19 @@ namespace LicenseGeneratorWorkflow.Unit.Tests
 			var emailSender = new EmailSender(smtpSettings);
 		    var licenseEmail = new LicenseEmail(emailSettings);
 	        var paypalSettings = new PayPalSettings();
+	        var paypalValidation = new PaypalIpnValidation(paypalSettings);
+	        var productProfileSettings = new ProductProfileSettings();
 
 		    var licenseWorkflow = new PaypalLicenseWorkflow(
                 cryptoLicenseGeneratorWrapper, 
                 emailSender, 
-                licenseEmail, 
-                paypalSettings);
-		    
-			var payPalInfo = new PayPalInfo(
-				"web_accept", 
-				"SKU/item code of your product", 1, 101, 1, "mark@maximasoftware.co.za", 
-				"dummyclient", "markpearl@gmail.com", "dummy company");
+                licenseEmail,
+                paypalValidation,
+                productProfileSettings);
 
-			licenseWorkflow.Run(payPalInfo, "Test");
+	        var payPalInfo = new PayPalInfo();
+
+            licenseWorkflow.Run(payPalInfo);
 		    Assert.True(true);
 	    }
     }
