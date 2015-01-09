@@ -1,18 +1,18 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace LicenseGeneratorWorkflow
 {
-    public class TemplateToMessageConverter
+	public class TemplateToMessageConverter
     {
         private const string PlaceHolderToken = "%%";
 
-        public string Convert(string templateData, Dictionary<string, string> placeholders )
+        public string Convert(string templateData, Dictionary<string, string> placeholders)
         {
             return ReplacePlaceholders(templateData, placeholders);
         }
 
-        string ReplacePlaceholders(string textTemplate, Dictionary<string, string> placeholders )
+        string ReplacePlaceholders(string textTemplate, Dictionary<string, string> placeholders)
         {
             for (var i = 0; i < placeholders.Count; i++)
             {

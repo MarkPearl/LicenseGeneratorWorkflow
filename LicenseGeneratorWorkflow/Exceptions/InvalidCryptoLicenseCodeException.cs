@@ -30,5 +30,6 @@ namespace LicenseGeneratorWorkflow.Exceptions
 			StreamingContext context) : base(info, context)
 		{
 		}
+
 	}
 }

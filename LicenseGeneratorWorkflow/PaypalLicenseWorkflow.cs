@@ -7,20 +7,20 @@ namespace LicenseGeneratorWorkflow
     {
 		private readonly LicenseGenerator _licenseGenerator;
 		private readonly EmailSender _emailSender;
-		private readonly LicenseEmail _licenseEmail;
+		private readonly UserLicenseEmail _userLicenseEmail;
         private readonly PaypalIpnValidation _paypalIpnValidation;
         private readonly ProductProfileSettings _productProfileSettings;
 
         public PaypalLicenseWorkflow(
 			LicenseGenerator licenseGenerator,
 			EmailSender emailSender,
-			LicenseEmail licenseEmail,
+			UserLicenseEmail userLicenseEmail,
             PaypalIpnValidation paypalIpnValidation,
             ProductProfileSettings productProfileSettings)
 		{
 			_licenseGenerator = licenseGenerator;
 			_emailSender = emailSender;
-			_licenseEmail = licenseEmail;
+			_userLicenseEmail = userLicenseEmail;
             _paypalIpnValidation = paypalIpnValidation;
             _productProfileSettings = productProfileSettings;
 		}
@@ -30,7 +30,7 @@ namespace LicenseGeneratorWorkflow
             _paypalIpnValidation.EnsureValid(payPalInfo);
 		    var productProfile = _productProfileSettings.GetValueOrDefault(payPalInfo.IpnItemNumber);
             var licenseCode = GenerateLicenseCode(payPalInfo, productProfile);
-            var message = _licenseEmail.ConstructEmail(payPalInfo.PayerEmail, licenseCode);
+            var message = _userLicenseEmail.ConstructEmail(payPalInfo, licenseCode);
             _emailSender.SendEmail(message);
 		}
 

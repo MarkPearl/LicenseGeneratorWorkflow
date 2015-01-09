@@ -27,13 +27,14 @@ namespace LicenseGeneratorWorkflow.Unit.Tests
 
 	        var emailSettings = new EmailSettings();
             emailSettings.Subject = parsedData["Email"].GetKeyData("Subject").Value;
-            emailSettings.TemaplateFileLocation = parsedData["Email"].GetKeyData("TemaplateFileLocation").Value;
+            emailSettings.EndUserEmailTemaplateFileLocation = parsedData["Email"].GetKeyData("EndUserEmailTemaplateFileLocation").Value;
             emailSettings.ProductName = parsedData["Email"].GetKeyData("ProductName").Value;
             emailSettings.From = parsedData["Email"].GetKeyData("From").Value;
 
             var cryptoLicenseGeneratorWrapper = new CryptoLicenseGeneratorWrapper(cryptoLicenseSettings);
 			var emailSender = new EmailSender(smtpSettings);
-		    var licenseEmail = new UserLicenseEmail(emailSettings, new TemplateToMessageConverter());
+		    var userLicenseEmail = new UserLicenseEmail(emailSettings, new TemplateToMessageConverter(), new EmailTemplatePlaceholders());
+		    var adminLicenseEmail = new AdminLicenseEmail(emailSettings, new TemplateToMessageConverter(), new EmailTemplatePlaceholders());
 	        var paypalSettings = new PayPalSettings();
 	        var paypalValidation = new PaypalIpnValidation(paypalSettings);
 	        var productProfileSettings = new ProductProfileSettings();
@@ -41,7 +42,7 @@ namespace LicenseGeneratorWorkflow.Unit.Tests
 		    var licenseWorkflow = new PaypalLicenseWorkflow(
                 cryptoLicenseGeneratorWrapper, 
                 emailSender, 
-                licenseEmail,
+                userLicenseEmail,
                 paypalValidation,
                 productProfileSettings);
 

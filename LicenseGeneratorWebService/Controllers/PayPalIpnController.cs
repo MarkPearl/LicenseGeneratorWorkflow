@@ -23,7 +23,7 @@ namespace LicenseGeneratorWebService.Controllers
 
             var cryptoLicenseGeneratorWrapper = new CryptoLicenseGeneratorWrapper(settings.CryptoLicenseSettings);
             var emailSender = new EmailSender(settings.SmtpSettings);
-            var licenseEmail = new UserLicenseEmail(settings.EmailSettings);
+            var licenseEmail = new UserLicenseEmail(settings.EmailSettings, new TemplateToMessageConverter(), new EmailTemplatePlaceholders());
             var payPalValidation = new PaypalIpnValidation(settings.PayPalSettings);
             var licenseWorkflow = new PaypalLicenseWorkflow(
                 cryptoLicenseGeneratorWrapper,

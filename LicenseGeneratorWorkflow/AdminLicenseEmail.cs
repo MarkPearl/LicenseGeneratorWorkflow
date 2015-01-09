@@ -1,20 +1,19 @@
-﻿using System.IO;
+using System.IO;
 using System.Net.Mail;
 using LicenseGeneratorWorkflow.Settings;
 
 namespace LicenseGeneratorWorkflow
 {
-	public class UserLicenseEmail
+    public class AdminLicenseEmail
     {
         private readonly TemplateToMessageConverter _templateToMessageConverter;
         private readonly EmailTemplatePlaceholders _emailTemplatePlaceholders;
         private readonly string _emailAddressBcc;
         private readonly string _emailAddressFrom;
-        private readonly string _productName;
         private readonly string _subject;
         private readonly string _emailTemplateFile;
 
-        public UserLicenseEmail(
+        public AdminLicenseEmail(
             EmailSettings emailSettings,
             TemplateToMessageConverter templateToMessageConverter,
             EmailTemplatePlaceholders emailTemplatePlaceholders)
@@ -23,7 +22,6 @@ namespace LicenseGeneratorWorkflow
             _emailTemplatePlaceholders = emailTemplatePlaceholders;
             _emailAddressBcc = emailSettings.Bcc;
             _emailAddressFrom = emailSettings.From;
-            _productName = emailSettings.ProductName;
             _subject = emailSettings.Subject;
             _emailTemplateFile = emailSettings.TemaplateFileLocation;
         }
@@ -48,7 +46,5 @@ namespace LicenseGeneratorWorkflow
             var bodyTemplate = File.ReadAllText(_emailTemplateFile);
             return _templateToMessageConverter.Convert(bodyTemplate, placeholders);
         }
-
-
     }
 }
